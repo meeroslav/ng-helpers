@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ng-helpers": [
+        "dist/ng-helpers"
+      ],
+      "ng-helpers/*": [
+        "dist/ng-helpers/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
