@@ -2,6 +2,6 @@
   "name": "ng-helpers",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/core": "^8.2.4"
+    "@angular/core": ">=6.0.0"
   }
 }

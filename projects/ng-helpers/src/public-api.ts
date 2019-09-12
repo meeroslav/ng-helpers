@@ -2,4 +2,4 @@
  * Public API Surface of ng-helpers
  */
 
-export * from './lib/fragment/fragment.component';
+export { FragmentComponent } from './lib/fragment/fragment.component';
