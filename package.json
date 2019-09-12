@@ -10,7 +10,9 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/core": "~8.2.4"
+    "@angular/core": "~8.2.4",
+    "@ngrx/effects": "~8.3.0",
+    "@ngrx/store": "~8.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.2",
