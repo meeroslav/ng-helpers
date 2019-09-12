@@ -1,11 +1,10 @@
-import { BaseAction, BaseFailedAction } from './base.actions';
+import { ActionClass, BaseAction, BaseFailedAction } from './base.actions';
 import { ofAction } from './ofAction';
 import { Actions } from '@ngrx/effects';
 import { of, OperatorFunction } from 'rxjs';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 
-export type ActionClass<T extends BaseAction<any>> = new (payload: any) => T;
-type FailActionClass<T extends BaseFailedAction> = new (payload: any, error: any) => T;
+type FailedActionClass<T extends BaseFailedAction> = ActionClass<T>;
 
 export abstract class BaseEffects<S> {
   protected constructor(protected readonly actions$: Actions, protected readonly service: S) { }
@@ -13,7 +12,7 @@ export abstract class BaseEffects<S> {
   // map action to switchMap service action call with pipe processing and action in case of failure
   protected switchMapEffect<T extends BaseAction<any>>(actionClass: ActionClass<T>,
                                                        method: keyof S,
-                                                       failActionClass: FailActionClass<any>,
+                                                       failActionClass: FailedActionClass,
                                                        switchPipe: (action: T) => OperatorFunction<any, any>) {
     return this.actions$.pipe(
       ofAction(actionClass),
@@ -28,7 +27,7 @@ export abstract class BaseEffects<S> {
   // map action to concatMap service action call with pipe processing and action in case of failure
   protected concatMapEffect<T extends BaseAction<any>>(actionClass: ActionClass<T>,
                                                        method: keyof S,
-                                                       failActionClass: FailActionClass<any>,
+                                                       failActionClass: FailedActionClass,
                                                        concatPipe: (action: T) => OperatorFunction<any, any>) {
     return this.actions$.pipe(
       ofAction(actionClass),

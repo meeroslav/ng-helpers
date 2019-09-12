@@ -25,3 +25,5 @@ export abstract class BaseFailedAction extends BaseAction<any> {
     super(payload);
   }
 }
+
+export type ActionClass<T extends Action> = new (...args) => T;
