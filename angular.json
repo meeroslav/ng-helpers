@@ -37,6 +37,124 @@
           }
         }
       }
+    },
+    "fragment-demo": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/fragment-demo",
+      "sourceRoot": "projects/fragment-demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/fragment-demo",
+            "index": "projects/fragment-demo/src/index.html",
+            "main": "projects/fragment-demo/src/main.ts",
+            "polyfills": "projects/fragment-demo/src/polyfills.ts",
+            "tsConfig": "projects/fragment-demo/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "projects/fragment-demo/src/favicon.ico",
+              "projects/fragment-demo/src/assets"
+            ],
+            "styles": [
+              "projects/fragment-demo/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/fragment-demo/src/environments/environment.ts",
+                  "with": "projects/fragment-demo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "fragment-demo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "fragment-demo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "fragment-demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/fragment-demo/src/test.ts",
+            "polyfills": "projects/fragment-demo/src/polyfills.ts",
+            "tsConfig": "projects/fragment-demo/tsconfig.spec.json",
+            "karmaConfig": "projects/fragment-demo/karma.conf.js",
+            "assets": [
+              "projects/fragment-demo/src/favicon.ico",
+              "projects/fragment-demo/src/assets"
+            ],
+            "styles": [
+              "projects/fragment-demo/src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/fragment-demo/tsconfig.app.json",
+              "projects/fragment-demo/tsconfig.spec.json",
+              "projects/fragment-demo/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/fragment-demo/e2e/protractor.conf.js",
+            "devServerTarget": "fragment-demo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "fragment-demo:serve:production"
+            }
+          }
+        }
+      }
     }},
   "defaultProject": "ng-helpers"
 }
