@@ -1,24 +1,43 @@
-# NgHelpers
+# ng helpers
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.4.
+> A library that provides helpers for your Angular projects that speed up the development or solve tricky problems.
 
-## Code scaffolding
+# Table of contents:
+- [Installation](#installation)
+- [Package](#package)
+- [License](#license)
 
-Run `ng generate component component-name --project ng-helpers` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-helpers`.
-> Note: Don't forget to add `--project ng-helpers` or else it will be added to the default project in your `angular.json` file. 
+## Installation
+```
+npm install --save ng-helpers
+```
 
-## Build
+## Package
+Package consists of following helpers:
+- [Fragment component](#fragment-component)
+  - Usage
+  - Dependencies
+  - API
+- [Media service](#media-service)
+  - Usage
+  - Dependencies
+  - API
+- [NgRx helpers](#ngrx-helpers)
+  - Usage
+  - Dependencies
+  - API
 
-Run `ng build ng-helpers` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Fragment component
 
-## Publishing
+Fragment component provides solution for cases when you don't want your component template to be wrapped in named tags, but rather have multiple root nodes.
 
-After building your library with `ng build ng-helpers`, go to the dist folder `cd dist/ng-helpers` and run `npm publish`.
+### Media service
 
-## Running unit tests
+Media service encapsulates the media query changes that happen on page load or resize and exposes them as observable stream.
 
-Run `ng test ng-helpers` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### NgRx helpers
 
-## Further help
+NgRx helpers reduce boilerplate needed to write the state management Actions, Effects and Reducers by leveraging typescript generics. 
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## License
+Licensed under MIT
