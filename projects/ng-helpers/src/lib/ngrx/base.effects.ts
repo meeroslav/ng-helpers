@@ -12,7 +12,7 @@ export abstract class BaseEffects<S> {
   // map action to switchMap service action call with pipe processing and action in case of failure
   protected switchMapEffect<T extends BaseAction<any>>(actionClass: ActionClass<T>,
                                                        method: keyof S,
-                                                       failActionClass: FailedActionClass,
+                                                       failActionClass: FailedActionClass<any>,
                                                        switchPipe: (action: T) => OperatorFunction<any, any>) {
     return this.actions$.pipe(
       ofAction(actionClass),
@@ -27,7 +27,7 @@ export abstract class BaseEffects<S> {
   // map action to concatMap service action call with pipe processing and action in case of failure
   protected concatMapEffect<T extends BaseAction<any>>(actionClass: ActionClass<T>,
                                                        method: keyof S,
-                                                       failActionClass: FailedActionClass,
+                                                       failActionClass: FailedActionClass<any>,
                                                        concatPipe: (action: T) => OperatorFunction<any, any>) {
     return this.actions$.pipe(
       ofAction(actionClass),

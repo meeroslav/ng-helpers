@@ -9,6 +9,7 @@ export enum ActionType {
 export abstract class BaseAction<T> implements Action {
   actionType = ActionType.LOADED;
   type = '//';
+
   constructor(public payload: T) {
     this.type = this.constructor.name;
   }
