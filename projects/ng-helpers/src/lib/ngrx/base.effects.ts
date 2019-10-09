@@ -54,13 +54,13 @@ export abstract class BaseEffects<S> {
                                                        payloadCallback: (action: T) => any) {
     return this.actions$.pipe(
       ofAction(actionClass),
-      map((action: T) => new targetAction(payloadCallback(action)))
+      map((action: T) => new targetAction(payloadCallback(action.payload)))
     );
   }
 
   protected mapServiceActionEffect<T extends BaseAction<any>>(actionClass: ActionClass<T>,
                                                               targetAction: ActionClass<any>,
                                                               method: keyof S) {
-    return this.mapActionEffect(actionClass, targetAction, this.service[method] as any);
+    return this.mapActionEffect(actionClass, targetAction, (this.service[method] as any).bind(this.service));
   }
 }
