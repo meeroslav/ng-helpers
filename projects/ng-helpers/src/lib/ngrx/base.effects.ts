@@ -61,6 +61,6 @@ export abstract class BaseEffects<S> {
   protected mapServiceActionEffect<T extends BaseAction<any>>(actionClass: ActionClass<T>,
                                                               targetAction: ActionClass<any>,
                                                               method: keyof S) {
-    return this.mapActionEffect(actionClass, targetAction, (this.service[method] as any).bind(this.service));
+    return this.mapActionEffect(actionClass, targetAction, (...args) => (this.service[method] as any)(...args));
   }
 }
