@@ -54,7 +54,7 @@ export abstract class BaseEffects<S> {
                                                        payloadCallback: (action: T) => any) {
     return this.actions$.pipe(
       ofAction(actionClass),
-      map((action: T) => new targetAction(payloadCallback(action.payload)))
+      map((action: T) => new targetAction(payloadCallback(action)))
     );
   }
 
