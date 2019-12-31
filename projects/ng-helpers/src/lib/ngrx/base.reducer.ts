@@ -1,7 +1,6 @@
 import { Action, ActionReducer } from '@ngrx/store';
-import { BaseState } from './base-state';
 import { ActionClass, BaseAction, BaseFailedAction } from './base.actions';
-import { ActionGroup } from './grouped-action';
+import { ActionGroup, BaseState } from './model';
 
 /**
  * @description

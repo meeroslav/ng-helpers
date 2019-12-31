@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ActionGroup, GroupedAction } from './grouped-action';
+import { ActionGroup, GroupedAction } from './model';
 
 /**
  * @description
