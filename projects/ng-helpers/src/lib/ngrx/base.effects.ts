@@ -41,17 +41,17 @@ export abstract class BaseEffects<S> {
    * ));
    * ```
    */
-  protected createSwitchMapEffect<A extends BaseAction, RES>(
-    actionClass: ActionClass<A>,
+  protected createSwitchMapEffect<A extends BaseAction<any>, RES>(
+    actionClass: ActionClass,
     method: (action: A) => RES,
-    failureTarget: FailedActionClass,
+    failureTarget: FailedActionClass<any>,
     innerPipe: (action: A) => OperatorFunction<any, any>
   ): Observable<Action> {
     return createEffect(() => this.actions$.pipe(
       ofAction(actionClass),
       switchMap((action: A) => method.bind(this.service)(action.payload)
         .pipe(this.mapInnerPipe<A, RES>(action, innerPipe, failureTarget)))
-    ));
+    ) as Observable<Action>);
   }
 
   /**
@@ -81,17 +81,17 @@ export abstract class BaseEffects<S> {
    * ));
    * ```
    */
-  protected createConcatMapEffect<A extends BaseAction, RES>(
-    actionClass: ActionClass<A>,
+  protected createConcatMapEffect<A extends BaseAction<any>, RES>(
+    actionClass: ActionClass,
     method: (action: A) => RES,
-    failureTarget: FailedActionClass,
+    failureTarget: FailedActionClass<any>,
     innerPipe: (action: A) => OperatorFunction<any, any>
   ): Observable<Action> {
     return createEffect(() => this.actions$.pipe(
       ofAction(actionClass),
       concatMap((action: A) => method.bind(this.service)(action.payload)
         .pipe(this.mapInnerPipe<A, RES>(action, innerPipe, failureTarget)))
-    ));
+    ) as Observable<Action>);
   }
 
   /**
@@ -102,11 +102,11 @@ export abstract class BaseEffects<S> {
    * @param innerPipe Pipe to handle response and/or source
    * @param failureTarget Action to dispatch on failure
    */
-  private mapInnerPipe<A extends BaseAction, RES>(
+  private mapInnerPipe<A extends BaseAction<any>, RES>(
     action: A,
     innerPipe: (action: A) => OperatorFunction<any, any>,
-    failureTarget: FailedActionClass
-  ) {
+    failureTarget: FailedActionClass<any>
+  ): OperatorFunction<any, any> {
     return pipe.call(this,
       innerPipe(action),
       catchError(error => of(new failureTarget(action.payload, error)))
@@ -136,8 +136,8 @@ export abstract class BaseEffects<S> {
    * ));
    * ```
    */
-  protected mapActionEffect<A extends BaseAction>(
-    actionClass: ActionClass<A>,
+  protected mapActionEffect<A extends BaseAction<any>>(
+    actionClass: ActionClass,
     targetAction: ActionClass,
     mapper: (action: A) => any = action => action
   ): Observable<Action> {

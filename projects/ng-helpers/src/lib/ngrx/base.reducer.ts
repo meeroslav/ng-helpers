@@ -1,3 +1,4 @@
+import { Action } from '@ngrx/store';
 import { ActionClass, BaseAction, BaseFailedAction } from './base.actions';
 import { ActionGroup, BaseState, ReducerHandlers } from './model';
 
@@ -75,10 +76,10 @@ import { ActionGroup, BaseState, ReducerHandlers } from './model';
  */
 export function baseReducer<T extends BaseState>(state: T,
                                                  actions: ActionClass[],
-                                                 action: BaseAction,
-                                                 config?: ReducerHandlers<T>): T {
+                                                 action: BaseAction<any>,
+                                                 config?: ReducerHandlers<T, Action>): T {
   // bail out if action does not match expected class
-  if (actions.indexOf(action.constructor) === -1) {
+  if (actions.indexOf(action.constructor as ActionClass) === -1) {
     return state;
   }
   if (action.actionGroup === ActionGroup.LOAD) {
@@ -93,8 +94,8 @@ export function baseReducer<T extends BaseState>(state: T,
   }
   if (action.actionGroup === ActionGroup.FAILURE) {
     return config && config.failureReducer
-      ? config.failureReducer(state, action as BaseFailedAction)
-      : defaultFailedReducer(state, action as BaseFailedAction);
+      ? config.failureReducer(state, action as BaseFailedAction<any>)
+      : defaultFailedReducer(state, action as BaseFailedAction<any>);
   }
   return state;
 }
@@ -104,5 +105,5 @@ const defaultLoadReducer = <S extends BaseState>(state: S): S => ({ ...state, er
 // default reducer function to run on every success action
 const defaultSuccessReducer = <S extends BaseState>(state: S): S => ({ ...state });
 // default reducer function to run on every failed action
-const defaultFailedReducer = <S extends BaseState>(state: S, action: BaseFailedAction): S => ({ ...state, error: action.error });
+const defaultFailedReducer = <S extends BaseState>(state: S, action: BaseFailedAction<any>): S => ({ ...state, error: action.error });
 

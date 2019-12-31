@@ -1,11 +1,22 @@
 import { Action } from '@ngrx/store';
 import { ActionGroup, GroupedAction } from './model';
 
+// underlying generic structure for all actions
+// extends Action and GroupedAction
+// sets type to constructor name (not unique, but using Good Action Hygiene™ useful for debugging)
+abstract class GenericAction<P> implements Action, GroupedAction {
+  readonly actionGroup: ActionGroup;
+  readonly type;
+
+  constructor(public payload: P) {
+    this.type = this.constructor.name;
+  }
+}
 /**
  * @description
  * Abstract generic action for load actions
  *
- * @param T Generic type of the payload
+ * @param P Generic type of the payload
  *
  * @usageNotes
  *
@@ -23,14 +34,14 @@ import { ActionGroup, GroupedAction } from './model';
  * }
  * ```
  */
-export abstract class BaseLoadAction<T> extends BaseAction<T> {
+export abstract class BaseLoadAction<P> extends GenericAction<P> {
   actionGroup = ActionGroup.LOAD;
 }
 /**
  * @description
  * Abstract generic action for success actions
  *
- * @param T Generic type of the payload
+ * @param P Generic type of the payload
  *
  * @usageNotes
  *
@@ -48,14 +59,14 @@ export abstract class BaseLoadAction<T> extends BaseAction<T> {
  * }
  * ```
  */
-export abstract class BaseSuccessAction<T> extends BaseAction<T> {
+export abstract class BaseSuccessAction<P> extends GenericAction<P> {
   actionGroup = ActionGroup.SUCCESS;
 }
 /**
  * @description
  * Abstract generic action for failure actions
  *
- * @param T Generic type of the original load payload
+ * @param P Generic type of the original load payload
  *
  * @usageNotes
  *
@@ -73,22 +84,11 @@ export abstract class BaseSuccessAction<T> extends BaseAction<T> {
  * }
  * ```
  */
-export abstract class BaseFailedAction<T> extends BaseAction<T> {
+export abstract class BaseFailedAction<P> extends GenericAction<P> {
   actionGroup = ActionGroup.FAILURE;
 
-  constructor(payload: T, public error: Error = null) {
+  constructor(payload: P, public error: Error = null) {
     super(payload);
-  }
-}
-// underlying generic structure for all actions
-// extends Action and GroupedAction
-// sets type to constructor name (not unique, but using Good Action Hygiene™ useful for debugging)
-abstract class BaseAction<T> implements Action, GroupedAction {
-  readonly actionGroup: ActionGroup;
-  readonly type;
-
-  constructor(public payload: T) {
-    this.type = this.constructor.name;
   }
 }
 
@@ -99,15 +99,15 @@ abstract class BaseAction<T> implements Action, GroupedAction {
  * - BaseFailedAction
  * - BaseSuccessAction
  */
-export type BaseAction = BaseLoadAction | BaseFailedAction | BaseSuccessAction;
+export type BaseAction<P> = BaseLoadAction<P> | BaseFailedAction<P> | BaseSuccessAction<P>;
 
 /**
  * @description
  * Type representing Action class (constructor)
  */
-export type ActionClass<T extends Action> = (...args) => T;
+export type ActionClass = (...args) => void;
 /**
  * @description
  * Type representing Failed Action class (constructor)
  */
-export type FailedActionClass<T extends BaseFailedAction> = (...args) => T;
+export type FailedActionClass<T> = (payload: T, error: Error) => void;
