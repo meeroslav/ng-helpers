@@ -1,6 +1,6 @@
 {
   "name": "ng-helpers",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/core": ">=6.0.0",
     "@ngrx/effects": ">=8.0.0",
