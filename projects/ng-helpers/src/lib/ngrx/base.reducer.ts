@@ -1,47 +1,123 @@
-import { ActionType, BaseAction, BaseFailedAction } from './base.actions';
+import { Action, ActionReducer } from '@ngrx/store';
+import { BaseState } from './base-state';
+import { ActionClass, BaseAction, BaseFailedAction } from './base.actions';
+import { ActionGroup } from './grouped-action';
 
-export function baseReducer<T>(state: T,
-                               // tslint:disable-next-line:ban-types
-                               actions: Function[],
-                               action: BaseAction<any>,
-                               handlers?: ReducerHandlers<T>): T {
+/**
+ * @description
+ * Generic reducer function that automatically handles generic base actions
+ * if not specified otherwise
+ *
+ * All `loading` actions would result with error reset:
+ * ```ts
+ * { ...state, error: null }
+ * ```
+ * while all `failure` actions would set the error:
+ * { ...state, error: action.error }
+ *
+ * Actions of type `success` leave the state unchanged if not specified otherwise
+ *
+ * @param state Type of state
+ * @param actions Array of parent action constructors we want to use reducer with
+ * @param action Current action in the pipeline
+ * @param config Generic handlers for specific group of actions. See [[ReducerHandler]] for more details
+ *
+ * @usageNotes
+ *
+ * In `actions` file:
+ * ```ts
+ * export class LoadProducts extends BaseLoadAction<string> { }
+ * export class ProductsLoaded extends BaseSuccessAction<Product[]> { }
+ * ...
+ * export type ProductActions = LoadProducts | ProductsLoaded | ...;
+ * ```
+ * Reducer file:
+ * ```ts
+ * import * as actions from './actions';
+ *
+ * export function productReducer(state: ProductState = initialState, action: actions.ProductActions): ProductState {
+ *   return baseReducer(state, Object.values(actions), action, { successReducer })
+ * }
+ *
+ * function successReducer(state: ProductState, action: actions.ProductActions): ProductState {
+ *    switch (action.constructor) {
+ *      case actions.ProductsLoaded: {
+ *        return { ...state, products: action.payload };
+ *      }
+ *      default:
+ *        return state;
+ *    }
+ * }
+ * ```
+ *
+ * Which is equivalent to:
+ * ```ts
+ * import * as actions from './actions';
+ *
+ * function successReducer(state: ProductState = initialState, action: actions.ProductActions): ProductState {
+ *    switch (action.constructor) {
+ *      case actions.LoadProducts:
+ *      case actions.LoadProduct:
+ *      ... {
+ *        return { ...state, error: null };
+ *      }
+ *      case actions.ProductsLoaded: {
+ *        return { ...state, products: action.payload };
+ *      }
+ *      case actions.ProductsLoadFailed:
+ *      case actions.ProductLoadFailed:
+ *      ... {
+ *        return { ...state, error: action.error };
+ *      }
+ *      default:
+ *        return state;
+ *    }
+ * }
+ * ```
+ */
+export function baseReducer<T extends BaseState>(state: T,
+                                                 actions: ActionClass[],
+                                                 action: BaseAction,
+                                                 config?: ReducerHandlers<T>): T {
+  // bail out if action does not match expected class
   if (actions.indexOf(action.constructor) === -1) {
     return state;
   }
-  if (action.actionType === ActionType.LOADING) {
-    return handlers && handlers.handleLoading
-      ? handlers.handleLoading(state, action)
-      : baseLoadingHandler(state, action);
+  if (action.actionGroup === ActionGroup.LOAD) {
+    return config && config.loadReducer
+      ? config.loadReducer(state, action)
+      : defaultLoadReducer(state);
   }
-  if (action.actionType === ActionType.LOADED) {
-    return handlers && handlers.handleLoaded
-      ? handlers.handleLoaded(state, action)
-      : baseLoadedHandler(state, action);
+  if (action.actionGroup === ActionGroup.SUCCESS) {
+    return config && config.successReducer
+      ? config.successReducer(state, action)
+      : defaultSuccessReducer(state);
   }
-  if (action.actionType === ActionType.FAILED) {
-    return handlers && handlers.handleFailed
-      ? handlers.handleFailed(state, action as BaseFailedAction)
-      : baseFailedHandler(state, action as BaseFailedAction);
+  if (action.actionGroup === ActionGroup.FAILURE) {
+    return config && config.failureReducer
+      ? config.failureReducer(state, action as BaseFailedAction)
+      : defaultFailedReducer(state, action as BaseFailedAction);
   }
-  return null;
+  return state;
 }
 
-function baseLoadingHandler<T>(state: T, action: BaseAction<any>): T {
-  return { ...state, error: null };
-}
+// default reducer function to run on every load action
+const defaultLoadReducer = <S extends BaseState>(state: S): S => ({ ...state, error: null });
+// default reducer function to run on every success action
+const defaultSuccessReducer = <S extends BaseState>(state: S): S => ({ ...state });
+// default reducer function to run on every failed action
+const defaultFailedReducer = <S extends BaseState>(state: S, action: BaseFailedAction): S => ({ ...state, error: action.error });
 
-function baseLoadedHandler<T>(state: T, action: BaseAction<any>): T {
-  return { ...state };
-}
-
-function baseFailedHandler<T>(state: T, action: BaseFailedAction): T {
-  return { ...state, error: action.error };
-}
-
-export type ReducerHandler<T> = (state: T, action: BaseAction<any>) => T;
-
-export interface ReducerHandlers<T> {
-  handleLoading?: ReducerHandler<T>;
-  handleFailed?: ReducerHandler<T>;
-  handleLoaded?: ReducerHandler<T>;
+/**
+ * @description
+ * Configuration of reducer overrides for specific group of actions
+ * Reducer can be replaced with any function that matches `ActionReducer` interface
+ *
+ * @param S Type of state
+ * @param A Type of action
+ */
+export interface ReducerHandlers<S, A extends Action> {
+  loadReducer?: ActionReducer<S, A>;
+  successReducer?: ActionReducer<S, A>;
+  failureReducer?: ActionReducer<S, A>;
 }
