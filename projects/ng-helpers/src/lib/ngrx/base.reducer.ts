@@ -1,6 +1,5 @@
-import { Action, ActionReducer } from '@ngrx/store';
 import { ActionClass, BaseAction, BaseFailedAction } from './base.actions';
-import { ActionGroup, BaseState } from './model';
+import { ActionGroup, BaseState, ReducerHandlers } from './model';
 
 /**
  * @description
@@ -107,16 +106,3 @@ const defaultSuccessReducer = <S extends BaseState>(state: S): S => ({ ...state 
 // default reducer function to run on every failed action
 const defaultFailedReducer = <S extends BaseState>(state: S, action: BaseFailedAction): S => ({ ...state, error: action.error });
 
-/**
- * @description
- * Configuration of reducer overrides for specific group of actions
- * Reducer can be replaced with any function that matches `ActionReducer` interface
- *
- * @param S Type of state
- * @param A Type of action
- */
-export interface ReducerHandlers<S, A extends Action> {
-  loadReducer?: ActionReducer<S, A>;
-  successReducer?: ActionReducer<S, A>;
-  failureReducer?: ActionReducer<S, A>;
-}

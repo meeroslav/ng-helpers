@@ -14,7 +14,7 @@ export { Device, Orientation, DEVICE, ORIENTATION } from './lib/media/model';
 export {
   BaseAction, BaseFailedAction, BaseLoadAction, BaseSuccessAction, ActionClass, FailedActionClass
 }from './lib/ngrx/base.actions';
-export { baseReducer, ReducerHandlers } from './lib/ngrx/base.reducer';
+export { baseReducer } from './lib/ngrx/base.reducer';
 export { BaseEffects } from './lib/ngrx/base.effects';
 export { ofAction } from './lib/ngrx/ofAction';
-export { GroupedAction, ActionGroup, BaseState, baseInitialState } from './lib/ngrx/model';
+export { GroupedAction, ActionGroup, BaseState, baseInitialState, ReducerHandlers } from './lib/ngrx/model';

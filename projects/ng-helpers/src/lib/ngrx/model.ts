@@ -2,6 +2,8 @@
  * @description
  * Enum of possible action groups
  */
+import { Action, ActionReducer } from '@ngrx/store';
+
 export const enum ActionGroup {
   LOAD = 'LOAD',
   SUCCESS = 'SUCCESS',
@@ -30,3 +32,18 @@ export interface BaseState {
 export const baseInitialState: BaseState = {
   error: null
 };
+
+/**
+ * @description
+ * Configuration of reducer overrides for specific group of actions
+ * Reducer can be replaced with any function that matches `ActionReducer` interface
+ *
+ * @param S Type of state
+ * @param A Type of action
+ */
+export interface ReducerHandlers<S, A extends Action> {
+  loadReducer?: ActionReducer<S, A>;
+  successReducer?: ActionReducer<S, A>;
+  failureReducer?: ActionReducer<S, A>;
+}
+
