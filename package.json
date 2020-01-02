@@ -10,19 +10,19 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/core": "~8.2.4",
-    "@ngrx/effects": "~8.3.0",
-    "@ngrx/store": "~8.3.0"
+    "@angular/core": "~8.2.14",
+    "@ngrx/effects": "~8.6.0",
+    "@ngrx/store": "~8.6.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.2",
     "@angular-devkit/build-ng-packagr": "~0.803.2",
     "@angular/platform-browser-dynamic": "^8.2.4",
     "@angular/platform-browser": "^8.2.4",
-    "@angular/common": "^8.2.4",
-    "@angular/compiler": "~8.2.4",
-    "@angular/cli": "~8.3.2",
-    "@angular/compiler-cli": "~8.2.4",
+    "@angular/common": "^8.2.14",
+    "@angular/compiler": "~8.2.14",
+    "@angular/cli": "~8.3.21",
+    "@angular/compiler-cli": "~8.2.14",
     "@types/node": "~8.9.4",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",

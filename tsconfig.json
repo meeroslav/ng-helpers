@@ -26,9 +26,5 @@
         "dist/ng-helpers/*"
       ]
     }
-  },
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
   }
 }
