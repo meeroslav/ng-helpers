@@ -20,6 +20,14 @@ export interface GroupedAction {
 
 /**
  * @description
+ * Type for extended failure action containing `error` property
+ */
+export interface FailurePayload extends GroupedAction {
+  error?: Error;
+}
+
+/**
+ * @description
  * Base state for generic actions and reducers that sets error property by default
  */
 export interface BaseState {
