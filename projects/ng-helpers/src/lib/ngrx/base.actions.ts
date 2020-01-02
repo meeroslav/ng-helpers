@@ -110,4 +110,4 @@ export type ActionClass = (...args) => void;
  * @description
  * Type representing Failed Action class (constructor)
  */
-export type FailedActionClass<T> = (payload: T, error: Error) => void;
+export type FailedActionClass<T extends { error: Error }> = (...args) => void;

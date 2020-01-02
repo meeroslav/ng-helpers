@@ -22,7 +22,7 @@ export interface GroupedAction {
  * @description
  * Type for extended failure action containing `error` property
  */
-export interface FailurePayload extends GroupedAction {
+export interface FailurePayload {
   error?: Error;
 }
 

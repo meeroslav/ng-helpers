@@ -22,3 +22,4 @@ export {
 }from './lib/ngrx/model';
 export { createLoadAction, createSuccessAction, createFailureAction } from './lib/ngrx/grouped-action';
 export { createGroupedReducer } from './lib/ngrx/grouped-reducer';
+export { EffectsHelper } from './lib/ngrx/effects-helper';
