@@ -8,7 +8,7 @@ import { ofAction } from './ofAction';
 /**
  * @description
  * Abstract effect helper class that reduces boilerplate
- * by extracting common functionality info helper effect creators
+ * by extracting common functionality into helper effect creators
  */
 export abstract class BaseEffects<S> {
   protected constructor(protected readonly actions$: Actions, protected readonly service: S) {
