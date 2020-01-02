@@ -53,7 +53,7 @@ import { ActionGroup, BaseState, GroupedReducers } from './model';
  * ```ts
  * import * as actions from './actions';
  *
- * function successReducer(state: ProductState = initialState, action: actions.ProductActions): ProductState {
+ * function productReducer(state: ProductState = initialState, action: actions.ProductActions): ProductState {
  *    switch (action.constructor) {
  *      case actions.LoadProducts:
  *      case actions.LoadProduct:
