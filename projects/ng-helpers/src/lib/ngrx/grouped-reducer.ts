@@ -92,6 +92,6 @@ function defaultSuccessReducer<S extends BaseState>(state: S): S {
  * @param state Store state of `BaseState` type
  * @param action Action to apply to reducer. Must extend `FailurePayload`
  */
-function defaultFailedReducer<S extends BaseState, A extends FailurePayload>(state: S, action: A): S {
+function defaultFailedReducer<S extends BaseState, A extends FailurePayload & GroupedAction & Action>(state: S, action: A): S {
   return { ...state, loading: LoadingState.FAILED, error: action.error };
 }
