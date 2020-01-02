@@ -4,7 +4,7 @@
  */
 import { Action, ActionReducer } from '@ngrx/store';
 
-export const enum ActionGroup {
+export enum ActionGroup {
   LOAD = 'LOAD',
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE'
@@ -28,9 +28,21 @@ export interface FailurePayload extends GroupedAction {
 
 /**
  * @description
+ * Enum of possible loading state values
+ */
+export enum LoadingState {
+  IDLE = 'IDLE',
+  LOADING = 'LOADING',
+  SUCCESSFUL = 'SUCCESSFUL',
+  FAILED = 'FAILED'
+}
+
+/**
+ * @description
  * Base state for generic actions and reducers that sets error property by default
  */
 export interface BaseState {
+  loading: LoadingState;
   error: any;
 }
 /**
@@ -38,6 +50,7 @@ export interface BaseState {
  * Initial state value for base state that sets error to null by default
  */
 export const baseInitialState: BaseState = {
+  loading: LoadingState.IDLE,
   error: null
 };
 
@@ -49,9 +62,8 @@ export const baseInitialState: BaseState = {
  * @param S Type of state
  * @param A Type of action
  */
-export interface ReducerHandlers<S, A extends Action> {
+export interface GroupedReducers<S, A extends Action> {
   loadReducer?: ActionReducer<S, A>;
   successReducer?: ActionReducer<S, A>;
   failureReducer?: ActionReducer<S, A>;
 }
-

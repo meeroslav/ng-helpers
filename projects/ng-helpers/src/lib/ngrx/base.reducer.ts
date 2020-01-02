@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { ActionClass, BaseAction, BaseFailedAction } from './base.actions';
-import { ActionGroup, BaseState, ReducerHandlers } from './model';
+import { ActionGroup, BaseState, GroupedReducers } from './model';
 
 /**
  * @description
@@ -77,7 +77,7 @@ import { ActionGroup, BaseState, ReducerHandlers } from './model';
 export function baseReducer<T extends BaseState>(state: T,
                                                  actions: ActionClass[],
                                                  action: BaseAction<any>,
-                                                 config?: ReducerHandlers<T, Action>): T {
+                                                 config?: GroupedReducers<T, Action>): T {
   // bail out if action does not match expected class
   if (actions.indexOf(action.constructor as ActionClass) === -1) {
     return state;

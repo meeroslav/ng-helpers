@@ -17,4 +17,8 @@ export {
 export { baseReducer } from './lib/ngrx/base.reducer';
 export { BaseEffects } from './lib/ngrx/base.effects';
 export { ofAction } from './lib/ngrx/ofAction';
-export { GroupedAction, ActionGroup, BaseState, baseInitialState, ReducerHandlers, FailurePayload } from './lib/ngrx/model';
+export {
+  GroupedAction, ActionGroup, BaseState, baseInitialState, GroupedReducers, FailurePayload
+}from './lib/ngrx/model';
+export { createLoadAction, createSuccessAction, createFailureAction } from './lib/ngrx/grouped-action';
+export { createGroupedReducer } from './lib/ngrx/grouped-reducer';
