@@ -2,6 +2,13 @@ import { Action } from '@ngrx/store';
 import { ActionClass, BaseAction, BaseFailedAction } from './base.actions';
 import { ActionGroup, BaseState, GroupedReducers } from './model';
 
+// default reducer function to run on every load action
+const defaultLoadReducer = <S extends BaseState>(state: S): S => ({ ...state, error: null });
+// default reducer function to run on every success action
+const defaultSuccessReducer = <S extends BaseState>(state: S): S => ({ ...state });
+// default reducer function to run on every failed action
+const defaultFailedReducer = <S extends BaseState>(state: S, action: BaseFailedAction<any>): S => ({ ...state, error: action.error });
+
 /**
  * @description
  * Generic reducer function that automatically handles generic base actions
@@ -99,11 +106,3 @@ export function baseReducer<T extends BaseState>(state: T,
   }
   return state;
 }
-
-// default reducer function to run on every load action
-const defaultLoadReducer = <S extends BaseState>(state: S): S => ({ ...state, error: null });
-// default reducer function to run on every success action
-const defaultSuccessReducer = <S extends BaseState>(state: S): S => ({ ...state });
-// default reducer function to run on every failed action
-const defaultFailedReducer = <S extends BaseState>(state: S, action: BaseFailedAction<any>): S => ({ ...state, error: action.error });
-
