@@ -32,5 +32,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: npm run lint:lib
-
       - run: npm run test:lib-coverage
+      - run: npm run report-coverage:lib
