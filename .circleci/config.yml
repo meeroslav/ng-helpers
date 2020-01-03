@@ -34,6 +34,3 @@ jobs:
       - run: npm run lint:lib
 
       - run: npm run test:lib-coverage
-
-      - codecov/upload:
-          file: {{ coverage_report_filepath }}
