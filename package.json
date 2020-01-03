@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "test:lib-coverage": "ng test ng-helpers --code-coverage --watch=false",
-    "report-coverage:lib": "cat ./coverage/ng-alert/lcov.info | codecov",
+    "report-coverage:lib": "cat ./coverage/ng-helpers/lcov.info | codecov",
     "lint": "ng lint",
     "lint:lib": "ng lint ng-helpers"
   },
