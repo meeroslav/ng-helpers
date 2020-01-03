@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && npm run copy:readme",
     "test": "ng test",
-    "test:lib-coverage": "ng test ng-helpers --code-coverage --watch=false",
+    "test:lib-coverage": "ng test ng-helpers --code-coverage",
     "report-coverage:lib": "cat ./coverage/ng-helpers/lcov.info | codecov",
+    "copy:readme": "copyfiles ./README.md ./dist/ng-helpers",
     "lint": "ng lint",
     "lint:lib": "ng lint ng-helpers"
   },
@@ -31,6 +32,7 @@
     "@types/node": "~8.9.4",
     "codecov": "^3.6.1",
     "codelyzer": "^5.0.0",
+    "copyfiles": "^2.1.1",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
