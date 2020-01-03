@@ -1,5 +1,8 @@
 # ng helpers
 
+[![CircleCI](https://circleci.com/gh/meeroslav/ng-helpers/tree/master.svg?style=svg)](https://circleci.com/gh/meeroslav/ng-helpers/tree/master)
+[![npm version](https://badge.fury.io/js/ng-helpers.svg)](https://www.npmjs.com/package/ng-helpers)
+
 > A library that provides helpers for your Angular projects that speed up the development or solve tricky problems.
 
 # Table of contents:
