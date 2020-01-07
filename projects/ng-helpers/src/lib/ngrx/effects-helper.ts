@@ -115,12 +115,12 @@ export abstract class EffectsHelper<S> {
    */
   protected createActionEffect<T>(
     target: ActionCreator<string, Creator>,
-    mapper: (action: Action) => T,
+    mapper: (action: T & Action) => T,
     ...allowedTypes: Array<string | ActionCreator<string, Creator>>
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...allowedTypes),
-      map((action: Action) => mapper ? mapper(action) : action),
+      map((action: T & Action) => mapper ? mapper(action) : action),
       map((payload: T) => target(payload) as Action) // TODO: remove `as Action` after PR
     ));
   }
