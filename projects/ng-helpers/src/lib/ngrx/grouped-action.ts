@@ -23,9 +23,9 @@ function groupedActionFactory<O extends object>(actionGroup: ActionGroup) {
   function createGroupedAction<T extends string, C extends Creator>(
     type: T,
     config?: { _as: 'props' } | C
-  ): Creator {
+  ): ActionCreator<T> {
     if (typeof config === 'function') {
-      return defineGroupedType(type, actionGroup, (...args: any[]) => ({
+      return defineGroupedType<T>(type, actionGroup, (...args: any[]) => ({
         ...config(...args),
         type,
         actionGroup
@@ -34,9 +34,9 @@ function groupedActionFactory<O extends object>(actionGroup: ActionGroup) {
     const as = config ? config._as : 'empty';
     switch (as) {
       case 'empty':
-        return defineGroupedType(type, actionGroup, () => ({ type, actionGroup }));
+        return defineGroupedType<T>(type, actionGroup, () => ({ type, actionGroup }));
       case 'props':
-        return defineGroupedType(type, actionGroup, (payload: O) => ({
+        return defineGroupedType<T>(type, actionGroup, (payload: O) => ({
           ...payload,
           type,
           actionGroup
@@ -49,7 +49,7 @@ function groupedActionFactory<O extends object>(actionGroup: ActionGroup) {
 }
 
 // Extension on ngrx defineType function providing extra parameter for presetting actionGroup
-function defineGroupedType(type: string, actionGroup: ActionGroup, creator: Creator): Creator {
+function defineGroupedType<T extends string = string>(type: T, actionGroup: ActionGroup, creator: Creator): ActionCreator<T> {
   return Object.defineProperties(creator, {
     type: {
       value: type,
