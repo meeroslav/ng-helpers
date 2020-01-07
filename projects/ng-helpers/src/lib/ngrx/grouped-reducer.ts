@@ -49,9 +49,11 @@ export function createGroupedReducer<S extends BaseState, A extends GroupedActio
   creators: { [key: string]: ActionCreator<string, Creator> },
   config?: GroupedReducers<S, A>
 ): ActionReducer<S, A> {
+  const creatorTypes: { [key: string]: string } = Object.keys(creators)
+    .reduce((acc, cur) => ({ ...acc, [creators[cur].type]: cur }), {});
 
   return (state: S = initialState, action: A): S => {
-    if (!creators[action.type]) {
+    if (!creatorTypes[action.type]) {
       return state;
     }
     if (action.actionGroup === ActionGroup.LOAD) {
