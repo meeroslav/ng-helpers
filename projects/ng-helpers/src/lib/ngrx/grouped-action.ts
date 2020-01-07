@@ -7,11 +7,11 @@ import { ActionGroup, FailurePayload, GroupedAction } from './model';
 function groupedActionFactory<O extends object>(actionGroup: ActionGroup) {
   function createGroupedAction<T extends string>(
     type: T
-  ): ActionCreator<T, () => GroupedAction & TypedAction<T>>;
+  ): ActionCreator<T, () => GroupedAction & TypedAction<T>> & GroupedAction;
   function createGroupedAction<T extends string, P extends O>(
     type: T,
     config: { _as: 'props'; _p: P }
-  ): ActionCreator<T, (props: P) => P & GroupedAction & TypedAction<T>>;
+  ): ActionCreator<T, (props: P) => P & GroupedAction & TypedAction<T>> & GroupedAction;
   function createGroupedAction<
     T extends string,
     P extends any[],
@@ -19,11 +19,11 @@ function groupedActionFactory<O extends object>(actionGroup: ActionGroup) {
     >(
     type: T,
     creator: Creator<P, R>
-  ): FunctionWithParametersType<P, R & TypedAction<T>> & GroupedAction & TypedAction<T>;
+  ): FunctionWithParametersType<P, R & GroupedAction & TypedAction<T>> & GroupedAction & TypedAction<T>;
   function createGroupedAction<T extends string, C extends Creator>(
     type: T,
     config?: { _as: 'props' } | C
-  ): ActionCreator<T> {
+  ): ActionCreator<T> & GroupedAction {
     if (typeof config === 'function') {
       return defineGroupedType<T>(type, actionGroup, (...args: any[]) => ({
         ...config(...args),
@@ -49,7 +49,8 @@ function groupedActionFactory<O extends object>(actionGroup: ActionGroup) {
 }
 
 // Extension on ngrx defineType function providing extra parameter for presetting actionGroup
-function defineGroupedType<T extends string = string>(type: T, actionGroup: ActionGroup, creator: Creator): ActionCreator<T> {
+function defineGroupedType<T extends string = string>(type: T, actionGroup: ActionGroup, creator: Creator)
+  : ActionCreator<T> & GroupedAction {
   return Object.defineProperties(creator, {
     type: {
       value: type,
