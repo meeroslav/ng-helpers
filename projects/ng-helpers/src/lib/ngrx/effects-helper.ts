@@ -10,12 +10,11 @@ import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
  *
  * @param S Generic type of service used for resource fetching
  */
-export abstract class EffectsHelper<S> {
+export abstract class EffectsHelper {
   /**
    * @param actions$ Observable of actions dispatched on store
-   * @param service Service used for resource fetching
    */
-  protected constructor(protected readonly actions$: Actions<Action>, protected readonly service: S) { }
+  protected constructor(protected readonly actions$: Actions<Action>) { }
 
   /**
    *
@@ -29,15 +28,15 @@ export abstract class EffectsHelper<S> {
    */
   protected createSwitchMapEffect<REQ extends object = {}, RES = any>(
     method: (payload: REQ) => Observable<RES>,
-    innerPipe: (payload: REQ) => OperatorFunction<RES, Action>,
+    innerPipe: (action: REQ) => OperatorFunction<RES, Action>,
     failureTarget: ActionCreator<string, Creator>,
     ...allowedTypes: Array<string | ActionCreator<string, Creator>>
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...allowedTypes),
-      switchMap((action: REQ & Action) => method.bind(this.service)(action)
+      switchMap((action: REQ & Action) => method(action)
         .pipe(
-          map(this.mapInnerPipe<REQ & Action, RES>(innerPipe, failureTarget, action))
+          this.mapInnerPipe<REQ & Action, RES>(innerPipe, failureTarget, action)
         ) as Observable<Action> // TODO: remove `as Observable<Action>` after PR
       )
     ));
@@ -61,9 +60,9 @@ export abstract class EffectsHelper<S> {
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...allowedTypes),
-      concatMap((action: REQ & Action) => method.bind(this.service)(action)
+      concatMap((action: REQ & Action) => method(action)
         .pipe(
-          map(this.mapInnerPipe<REQ & Action, RES>(innerPipe, failureTarget, action))
+          this.mapInnerPipe<REQ & Action, RES>(innerPipe, failureTarget, action)
         ) as Observable<Action> // TODO: remove `as Observable<Action>` after PR
       )
     ));
