@@ -1,11 +1,11 @@
-# ng helpers
-
 [![CircleCI](https://circleci.com/gh/meeroslav/ng-helpers/tree/master.svg?style=svg)](https://circleci.com/gh/meeroslav/ng-helpers/tree/master)
 [![npm version](https://badge.fury.io/js/ng-helpers.svg)](https://www.npmjs.com/package/ng-helpers)
 
+# ng helpers
+
 > A library that provides helpers for your Angular projects that speed up the development or solve tricky problems.
 
-# Table of contents:
+Table of contents:
 - [Installation](#installation)
 - [Package](#package)
 - [License](#license)
@@ -18,14 +18,17 @@ npm install --save ng-helpers
 ## Package
 Package consists of following helpers:
 - [Fragment component](#fragment-component)
+  - Problem
   - Usage
   - Dependencies
   - API
 - [Media service](#media-service)
+  - Problem
   - Usage
   - Dependencies
   - API
 - [NgRx helpers](#ngrx-helpers)
+  - Problem
   - Usage
   - Dependencies
   - API
