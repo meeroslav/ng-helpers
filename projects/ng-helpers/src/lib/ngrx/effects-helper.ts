@@ -27,17 +27,17 @@ export abstract class EffectsHelper<S> {
    * @param failureTarget Action to dispatch on failure
    * @param allowedTypes Actions (or types) to filter by
    */
-  protected createSwitchMapEffect<REQ extends Action, RES>(
-    method: (action: REQ) => Observable<RES>,
-    innerPipe: (action: REQ) => OperatorFunction<RES, Action>,
+  protected createSwitchMapEffect<REQ extends object = {}, RES = any>(
+    method: (payload: REQ) => Observable<RES>,
+    innerPipe: (payload: REQ) => OperatorFunction<RES, Action>,
     failureTarget: ActionCreator<string, Creator>,
     ...allowedTypes: Array<string | ActionCreator<string, Creator>>
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...allowedTypes),
-      switchMap((action: REQ) => method.bind(this.service)(action)
+      switchMap((action: REQ & Action) => method.bind(this.service)(action)
         .pipe(
-          map(this.mapInnerPipe<REQ, RES>(innerPipe, failureTarget, action))
+          map(this.mapInnerPipe<REQ & Action, RES>(innerPipe, failureTarget, action))
         ) as Observable<Action> // TODO: remove `as Observable<Action>` after PR
       )
     ));
@@ -53,7 +53,7 @@ export abstract class EffectsHelper<S> {
    * @param failureTarget Action to dispatch on failure
    * @param allowedTypes Actions (or types) to filter by
    */
-  protected createConcatMapEffect<REQ extends Action, RES>(
+  protected createConcatMapEffect<REQ extends object = {}, RES = any>(
     method: (action: REQ) => Observable<RES>,
     innerPipe: (action: REQ) => OperatorFunction<RES, Action>,
     failureTarget: ActionCreator<string, Creator>,
@@ -61,9 +61,9 @@ export abstract class EffectsHelper<S> {
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...allowedTypes),
-      concatMap((action: REQ) => method.bind(this.service)(action)
+      concatMap((action: REQ & Action) => method.bind(this.service)(action)
         .pipe(
-          map(this.mapInnerPipe<REQ, RES>(innerPipe, failureTarget, action))
+          map(this.mapInnerPipe<REQ & Action, RES>(innerPipe, failureTarget, action))
         ) as Observable<Action> // TODO: remove `as Observable<Action>` after PR
       )
     ));
@@ -77,7 +77,7 @@ export abstract class EffectsHelper<S> {
    * @param failureTarget Action to dispatch on failure
    * @param action Source action
    */
-  private mapInnerPipe<REQ extends Action, RES>(
+  private mapInnerPipe<REQ extends Action, RES = any>(
     innerPipe: (action: REQ) => OperatorFunction<RES, Action>,
     failureTarget: ActionCreator<string, Creator>,
     action: REQ
