@@ -1,6 +1,9 @@
 import { Action, ActionCreator, ActionReducer, Creator } from '@ngrx/store';
 import { ActionGroup, BaseState, FailurePayload, GroupedAction, GroupedReducers, LoadingState } from './model';
 
+function isGroupedAction(action: Action | GroupedAction): action is GroupedAction {
+  return (action as GroupedAction).actionGroup !== undefined;
+}
 /**
  * @description
  * Create generic reducer that automatically processes actions based on their group type
@@ -26,14 +29,16 @@ import { ActionGroup, BaseState, FailurePayload, GroupedAction, GroupedReducers,
  *   on(productLoaded, (state, { product }) => ({ ...state, product, loading: LoadingState.SUCCESSFUL })),
  *   on(productsLoaded, (state, { products }) => ({ ...state, products, loading: LoadingState.SUCCESSFUL }))
  * );
- * export const productReducer = createGroupedReducer(initialState, actions, { successReducer });
+ * export function reducer(state: ProductState, action: Action) {
+ *   return createGroupedReducer(initialState, actions, { successReducer })(state, action);
+ * }
  * ```
  *
  * Which is equivalent to:
  * ```ts
  * import * as actions from './actions';
  *
- * export const productReducer = createReducer(
+ * const productReducer = createReducer(
  *   initialState,
  *   on(LoadProducts, LoadProduct, ...,
  *     (state) => ({ ...state, error: null, loading: LoadingState.LOADING })),
@@ -42,9 +47,13 @@ import { ActionGroup, BaseState, FailurePayload, GroupedAction, GroupedReducers,
  *   on(LoadProductsFailed, LoadProductFailed, ...,
  *     (state, { error }) => ({ ...state, error, loading: LoadingState.FAILED })),
  * );
+ *
+ * export function reducer(state: ProductState, action: Action) {
+ *   return productReducer(state, action);
+ * }
  * ```
  */
-export function createGroupedReducer<S extends BaseState, A extends GroupedAction & Action>(
+export function createGroupedReducer<S extends BaseState, A extends Action>(
   initialState: S,
   creators: { [key: string]: ActionCreator<string, Creator> },
   config?: GroupedReducers<S, A>
@@ -56,16 +65,19 @@ export function createGroupedReducer<S extends BaseState, A extends GroupedActio
     if (!creatorTypes[action.type]) {
       return state;
     }
-    if (action.actionGroup === ActionGroup.LOAD) {
-      return config.loadReducer ? config.loadReducer(state, action) : defaultLoadReducer(state);
+    if (isGroupedAction(action)) {
+      if (action.actionGroup === ActionGroup.LOAD) {
+        return config.loadReducer ? config.loadReducer(state, action) : defaultLoadReducer(state);
+      }
+      if (action.actionGroup === ActionGroup.SUCCESS) {
+        return config.successReducer ? config.successReducer(state, action) : defaultSuccessReducer(state);
+      }
+      if (action.actionGroup === ActionGroup.FAILURE) {
+        return config.failureReducer ? config.failureReducer(state, action) : defaultFailedReducer(state, action);
+      }
+      throw new Error(`Unexpected action group ${action.actionGroup}.`);
     }
-    if (action.actionGroup === ActionGroup.SUCCESS) {
-      return config.successReducer ? config.successReducer(state, action) : defaultSuccessReducer(state);
-    }
-    if (action.actionGroup === ActionGroup.FAILURE) {
-      return config.failureReducer ? config.failureReducer(state, action) : defaultFailedReducer(state, action);
-    }
-    throw new Error('Unexpected action.');
+    return config.generalReducer ? config.generalReducer(state, action) : defaultGeneralReducer(state);
   };
 }
 
@@ -96,4 +108,13 @@ function defaultSuccessReducer<S extends BaseState>(state: S): S {
  */
 function defaultFailedReducer<S extends BaseState, A extends FailurePayload & GroupedAction & Action>(state: S, action: A): S {
   return { ...state, loading: LoadingState.FAILED, error: action.error };
+}
+/**
+ * Default reducer for handling actions that do not fit match of the groups
+ * Returns unchanged state
+ *
+ * @param state Store state of `BaseState` type
+ */
+function defaultGeneralReducer<S extends BaseState>(state: S): S {
+  return state;
 }

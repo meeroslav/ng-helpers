@@ -66,4 +66,5 @@ export interface GroupedReducers<S, A extends Action> {
   loadReducer?: ActionReducer<S, A>;
   successReducer?: ActionReducer<S, A>;
   failureReducer?: ActionReducer<S, A>;
+  generalReducer?: ActionReducer<S, A>;
 }
