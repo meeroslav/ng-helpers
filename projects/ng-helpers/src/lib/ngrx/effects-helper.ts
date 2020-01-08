@@ -7,8 +7,6 @@ import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
  * @description
  * Abstract effect helper class that reduces boilerplate
  * by extracting common functionality into helper effect creators
- *
- * @param S Generic type of service used for resource fetching
  */
 export abstract class EffectsHelper {
   /**
@@ -19,9 +17,9 @@ export abstract class EffectsHelper {
   /**
    *
    * @description
-   * Create side effect by mapping action to service method call using `switchMap` to handle concurrency.
+   * Create side effect by mapping action to a function call using `switchMap` to handle concurrency.
    *
-   * @param method Service method to call with action payload
+   * @param method Function to call with action payload
    * @param innerPipe Pipe to handle successful response and/or source
    * @param failureTarget Action to dispatch on failure
    * @param allowedTypes Actions (or types) to filter by
@@ -45,9 +43,9 @@ export abstract class EffectsHelper {
   /**
    *
    * @description
-   * Create side effect by mapping action to service method call using `switchMap` to handle concurrency.
+   * Create side effect by mapping action to a function call using `switchMap` to handle concurrency.
    *
-   * @param method Service method to call with action payload
+   * @param method Function to call with action payload
    * @param innerPipe Pipe to handle successful response and/or source
    * @param failureTarget Action to dispatch on failure
    * @param allowedTypes Actions (or types) to filter by
