@@ -3,6 +3,8 @@ import { Action, ActionCreator, Creator } from '@ngrx/store';
 import { Observable, of, OperatorFunction, pipe } from 'rxjs';
 import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 
+type AllowedType = string | ActionCreator<string, Creator>;
+
 /**
  * @description
  * Abstract effect helper class that reduces boilerplate
@@ -28,7 +30,7 @@ export abstract class EffectsHelper {
     method: (payload: REQ) => Observable<RES>,
     innerPipe: (action: REQ) => OperatorFunction<RES, Action>,
     failureTarget: ActionCreator<string, Creator>,
-    ...allowedTypes: Array<string | ActionCreator<string, Creator>>
+    ...allowedTypes: AllowedType[]
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...allowedTypes),
@@ -54,7 +56,7 @@ export abstract class EffectsHelper {
     method: (action: REQ) => Observable<RES>,
     innerPipe: (action: REQ) => OperatorFunction<RES, Action>,
     failureTarget: ActionCreator<string, Creator>,
-    ...allowedTypes: Array<string | ActionCreator<string, Creator>>
+    ...allowedTypes: AllowedType[]
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...allowedTypes),
@@ -113,7 +115,7 @@ export abstract class EffectsHelper {
   protected createActionEffect<T>(
     target: ActionCreator<string, Creator>,
     mapper: (action: T & Action) => T,
-    ...allowedTypes: Array<string | ActionCreator<string, Creator>>
+    ...allowedTypes: AllowedType[]
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...allowedTypes),
