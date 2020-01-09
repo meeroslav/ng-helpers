@@ -75,7 +75,7 @@ export abstract class EffectsHelper {
       switchMap((action: REQ & Action) => method(action)
         .pipe(
           this.mapInnerPipe<REQ & Action, RES>(innerPipe, failureTarget, action)
-        ) as Observable<Action> // TODO: remove `as Observable<Action>` after PR
+        )
       )
     ));
   }
@@ -139,7 +139,7 @@ export abstract class EffectsHelper {
       concatMap((action: REQ & Action) => method(action)
         .pipe(
           this.mapInnerPipe<REQ & Action, RES>(innerPipe, failureTarget, action)
-        ) as Observable<Action> // TODO: remove `as Observable<Action>` after PR
+        )
       )
     ));
   }
@@ -193,7 +193,7 @@ export abstract class EffectsHelper {
   ) {
     return createEffect(() => this.actions$.pipe(
       ofType(...Array.isArray(allowedTypes) ? allowedTypes : [allowedTypes]),
-      map((action: T & Action) => mapper(action)) // TODO: remove `as Action` after PR
+      map((action: T & Action) => mapper(action))
     ));
   }
 }
