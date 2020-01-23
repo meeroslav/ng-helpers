@@ -40,11 +40,11 @@ function isGroupedAction(action: Action | GroupedAction): action is GroupedActio
  *
  * const productReducer = createReducer(
  *   initialState,
- *   on(LoadProducts, LoadProduct, ...,
+ *   on(loadProducts, loadProduct, loadUsers, loadUser,
  *     (state) => ({ ...state, error: null, loading: LoadingState.LOADING })),
  *   on(productLoaded, (state, { product }) => ({ ...state, product, loading: LoadingState.SUCCESSFUL })),
  *   on(productsLoaded, (state, { products }) => ({ ...state, products, loading: LoadingState.SUCCESSFUL }))
- *   on(LoadProductsFailed, LoadProductFailed, ...,
+ *   on(loadProductsFailed, loadProductFailed, loadUsersFailed, loadUserFailed,
  *     (state, { error }) => ({ ...state, error, loading: LoadingState.FAILED })),
  * );
  *
