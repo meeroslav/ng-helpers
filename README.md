@@ -203,7 +203,64 @@ export function reducer(state: ProductState, action: Action) {
 ```
 
 * Effect helpers
-TBD
+```typescript
+export class MyEffectsClass extends EffectsHelper {
+  constructor(actions: Actions, private readonly service: MyService) {
+    super(actions);
+  }
+
+  efx1$ = this.createSwitchMapEffect(
+    loadProducts,
+    this.service.getProducts,
+    () => map(response => productsLoaded(response)),
+    productsLoadFailed
+  );
+
+  efx2$ = this.createConcatMapEffect(
+    saveProducts,
+    this.service.saveProducts,
+    () => map(response => productsSaved(response)),
+    productsSaveFailed
+  );
+  
+  failureEfx$ = this.createMapEffect(
+    loadProductFailed,
+    ({ productId }) => showFailureMessage({ message: `Loading product ${productId} failed` })
+  );
+}
+```
+
+which is equivalent to:
+```typescript
+export class MyEffectsClass extends EffectsHelper {
+   constructor(private readonly actions$: Actions, private readonly service: MyService) { }
+
+   efx1$ = createEffect(() => this.actions$.pipe(
+     ofType(loadProducts),
+     switchMap(action => this.service.getProducts(action)
+       .pipe(
+         map(response => productsLoaded(response)),
+         catchError(error => productsLoadFailed({ ...action, error })
+        )
+      )
+   ));
+
+   efx2$ = createEffect(() => this.actions$.pipe(
+     ofType(saveProducts),
+     concatMap(action => this.service.saveProducts(action)
+       .pipe(
+         map(response => productsSaved(response)),
+         catchError(error => productsSaveFailed({ ...action, error })
+        )
+      )
+   ));
+
+   failureEfx$ = createEffect(() => this.actions$.pipe(
+     ofType(loadProductFailed),
+     map(({ productId }) => showFailureMessage({ message: `Loading product ${productId} failed` }))
+   ));
+}
+```
 
 #### Dependencies
 
