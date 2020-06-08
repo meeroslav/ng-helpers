@@ -5,7 +5,7 @@ export const MEDIA_MODULE_FORROOT_GUARD = new InjectionToken<MediaModule>('MEDIA
 
 @NgModule()
 export class MediaModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<MediaModule> {
     return {
       ngModule: MediaModule,
       providers: [

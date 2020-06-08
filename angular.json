@@ -15,7 +15,12 @@
             "tsConfig": "projects/ng-helpers/tsconfig.lib.json",
             "project": "projects/ng-helpers/ng-package.json"
           }
-        },
+        ,          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-helpers/tsconfig.lib.prod.json"
+            }
+          }
+},
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -53,7 +58,7 @@
             "main": "projects/fragment-demo/src/main.ts",
             "polyfills": "projects/fragment-demo/src/polyfills.ts",
             "tsConfig": "projects/fragment-demo/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/fragment-demo/src/favicon.ico",
               "projects/fragment-demo/src/assets"
@@ -76,7 +81,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -171,7 +175,7 @@
             "main": "projects/media-demo/src/main.ts",
             "polyfills": "projects/media-demo/src/polyfills.ts",
             "tsConfig": "projects/media-demo/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/media-demo/src/favicon.ico",
               "projects/media-demo/src/assets"
@@ -194,7 +198,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -289,7 +292,7 @@
             "main": "projects/ngrx-demo/src/main.ts",
             "polyfills": "projects/ngrx-demo/src/polyfills.ts",
             "tsConfig": "projects/ngrx-demo/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/ngrx-demo/src/favicon.ico",
               "projects/ngrx-demo/src/assets"
@@ -312,7 +315,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
