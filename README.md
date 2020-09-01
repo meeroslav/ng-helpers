@@ -130,4 +130,7 @@ TBD
 TBD
 
 ## License
-Licensed under MIT
+
+[MIT](http://opensource.org/licenses/MIT)
+
+Copyright (c) 2019-present, Miroslav Jonas
