@@ -27,7 +27,7 @@ Package consists of following helpers:
 - [Fragment component](#fragment-component)
   - [Problem](#problem)
   - [Usage](#usage)
-- [Media service](#media-service)
+- [Media](#media-directive)
   - [Problem](#problem-1)
   - [Usage](#usage-1)
 
@@ -124,15 +124,34 @@ will render as:
 
 Possible usages are rendering partial `li` lists, table rows or columns or any other parts of DOM that require specific parent DOM element.
 
-### Media service
+### Media directive
 
-Media service encapsulates the media query changes that happen on page load or resize and exposes them as observable stream.
+Structural directive for manipulating content of the template based on matched media query. It's an upgrade from [CSS based responsive design driven by media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries).
 
 #### Problem
-TBD
+The CSS media queries represent well-known way to handle responsive design, but the CSS cannot control the generation of DOM elements, just their visual representation. By having too many differences between responsive states we are poluting the DOM by keeping there elements that are not visible.
+
+This can be avoided in Angular by using structural directives or components that will not be rendered unless certain media query is matched.
 
 #### Usage
-TBD
+
+```html
+<div *media="'(min-width: 768px)'">I will be shown only on desktop</div>
+<my-portait-component *media="'(orientation: portrait)'"></my-portait-component>
+```
+
+Some of the most common media queries:
+
+| Query | Result |
+| - | - |
+| `(max-width: 768px)` | Used for mobile views |
+| `(min-width: 769px) and (max-width: 1200px)` | Standard browsers size |
+| `(min-width: 1201px) and (max-width: 1400px)` | Wide browsers |
+| `(min-width: 1401px)` | Ultra-wide browser |
+| `(orientation: landscape)` | Landscape mode on handheld device or if width > height |
+| `(orientation: portrait)` | Portrait mode on handheld device or height > width |
+
+You can find more on [CSS Tricks post](https://css-tricks.com/snippets/css/media-queries-for-standard-devices/).
 
 ## License
 
