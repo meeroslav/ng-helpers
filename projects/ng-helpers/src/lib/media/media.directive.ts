@@ -6,8 +6,8 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
  *
  * @Usage
  *
- * <div *media="'(min-width: 768px)'">mobile</div>
- * <div *media="'(max-width: 767px)'">desktop</div>
+ * <div *media="'(min-width: 768px)'">desktop</div>
+ * <div *media="'(max-width: 767px)'">mobile</div>
  *
  */
 @Directive({
