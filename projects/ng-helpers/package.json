@@ -3,5 +3,8 @@
   "version": "0.4.2",
   "peerDependencies": {
     "@angular/core": ">=6.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
   }
 }

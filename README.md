@@ -1,7 +1,9 @@
+<p align="center"><img width="100" src="https://raw.githubusercontent.com/meeroslav/ng-helpers/master/.assets/nghelper.png" alt="Ng Helpers logo"></p>
+
 [![CircleCI](https://circleci.com/gh/meeroslav/ng-helpers/tree/master.svg?style=svg)](https://circleci.com/gh/meeroslav/ng-helpers/tree/master)
 [![npm version](https://badge.fury.io/js/ng-helpers.svg)](https://www.npmjs.com/package/ng-helpers)
 
-# ng helpers
+<h1 align="center">Ng Helpers</h2>
 
 > A library that provides helpers for your Angular projects that speed up the development or solve tricky problems.
 
