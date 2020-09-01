@@ -1,14 +1,16 @@
+> A library that provides helpers for your Angular projects that speed up the development or solve tricky problems.
+
 <p align="center"><img width="300" src="https://raw.githubusercontent.com/meeroslav/ng-helpers/master/.assets/nghelper.png" alt="Ng Helpers logo"></p>
 
 <p align="center">
   <a href="https://circleci.com/gh/meeroslav/ng-helpers/tree/master"><img src="https://circleci.com/gh/meeroslav/ng-helpers/tree/master.svg?style=svg" alt="Build Status"></a>
   <a href="https://www.npmjs.com/package/ng-helpers"><img src="https://img.shields.io/npm/v/ng-helpers.svg?sanitize=true" alt="Version"></a>
-  <!--<a href="https://www.npmjs.com/package/ng-helpers"><img src="https://img.shields.io/npm/l/ng-helpers.svg?sanitize=true" alt="License"></a>-->
+  <a href="https://www.npmjs.com/package/ng-helpers"><img src="https://img.shields.io/npm/l/ng-helpers.svg?sanitize=true" alt="License"></a>
 </p>
 
 <h1 align="center">ng Helpers</h2>
 
-> A library that provides helpers for your Angular projects that speed up the development or solve tricky problems.
+
 
 Table of contents:
 - [Installation](#installation)

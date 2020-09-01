@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build && npm run copy:readme",
+    "build": "ng build --prod && npm run copy:readme",
     "test": "ng test",
     "test:lib-coverage": "ng test ng-helpers --code-coverage",
     "report-coverage:lib": "cat ./coverage/ng-helpers/lcov.info | codecov",
@@ -12,7 +12,22 @@
     "lint": "ng lint",
     "lint:lib": "ng lint ng-helpers"
   },
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meeroslav/ng-helpers.git"
+  },
+  "keywords": [
+    "angular",
+    "helpers",
+    "media",
+    "fragment"
+  ],
+  "author": "Miroslav Jonas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meeroslav/ng-helpers/issues"
+  },
+  "homepage": "https://github.com/meeroslav/ng-helpers",
   "dependencies": {
     "@angular/core": "~10.0.14",
     "rxjs": "^6.5.3",
