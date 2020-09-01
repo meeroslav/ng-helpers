@@ -14,13 +14,13 @@
           "options": {
             "tsConfig": "projects/ng-helpers/tsconfig.lib.json",
             "project": "projects/ng-helpers/ng-package.json"
-          }
-        ,          "configurations": {
+          },
+          "configurations": {
             "production": {
               "tsConfig": "projects/ng-helpers/tsconfig.lib.prod.json"
             }
           }
-},
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -276,123 +276,7 @@
           }
         }
       }
-    },
-    "ngrx-demo": {
-      "projectType": "application",
-      "schematics": {},
-      "root": "projects/ngrx-demo",
-      "sourceRoot": "projects/ngrx-demo/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/ngrx-demo",
-            "index": "projects/ngrx-demo/src/index.html",
-            "main": "projects/ngrx-demo/src/main.ts",
-            "polyfills": "projects/ngrx-demo/src/polyfills.ts",
-            "tsConfig": "projects/ngrx-demo/tsconfig.app.json",
-            "aot": true,
-            "assets": [
-              "projects/ngrx-demo/src/favicon.ico",
-              "projects/ngrx-demo/src/assets"
-            ],
-            "styles": [
-              "projects/ngrx-demo/src/styles.css"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/ngrx-demo/src/environments/environment.ts",
-                  "with": "projects/ngrx-demo/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "ngrx-demo:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "ngrx-demo:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "ngrx-demo:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/ngrx-demo/src/test.ts",
-            "polyfills": "projects/ngrx-demo/src/polyfills.ts",
-            "tsConfig": "projects/ngrx-demo/tsconfig.spec.json",
-            "karmaConfig": "projects/ngrx-demo/karma.conf.js",
-            "assets": [
-              "projects/ngrx-demo/src/favicon.ico",
-              "projects/ngrx-demo/src/assets"
-            ],
-            "styles": [
-              "projects/ngrx-demo/src/styles.css"
-            ],
-            "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/ngrx-demo/tsconfig.app.json",
-              "projects/ngrx-demo/tsconfig.spec.json",
-              "projects/ngrx-demo/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/ngrx-demo/e2e/protractor.conf.js",
-            "devServerTarget": "ngrx-demo:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "ngrx-demo:serve:production"
-            }
-          }
-        }
-      }
-    }},
+    }
+  },
   "defaultProject": "ng-helpers"
 }

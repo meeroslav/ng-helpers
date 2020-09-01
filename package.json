@@ -1,6 +1,6 @@
 {
   "name": "ng-helpers",
-  "version": "0.1.1",
+  "version": "0.4.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -15,8 +15,6 @@
   "private": true,
   "dependencies": {
     "@angular/core": "~9.1.9",
-    "@ngrx/effects": "~9.2.0",
-    "@ngrx/store": "~9.2.0",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
