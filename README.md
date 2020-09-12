@@ -15,6 +15,12 @@
 Table of contents:
 - [Installation](#installation)
 - [Package](#package)
+  - [Fragment component](#fragment-component)
+    - [Problem](#problem)
+    - [Usage](#usage)
+  - [Media](#media-directive)
+    - [Problem](#problem-1)
+    - [Usage](#usage-1)
 - [License](#license)
 
 ## Installation
@@ -25,11 +31,7 @@ npm install --save ng-helpers
 ## Package
 Package consists of following helpers:
 - [Fragment component](#fragment-component)
-  - [Problem](#problem)
-  - [Usage](#usage)
 - [Media](#media-directive)
-  - [Problem](#problem-1)
-  - [Usage](#usage-1)
 
 ### Fragment component
 
