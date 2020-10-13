@@ -27,7 +27,9 @@ export class MediaDirective implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.listenerCleanup && this.listenerCleanup();
+    if (this.listenerCleanup) {
+      this.listenerCleanup();
+    }
   }
 
   private initListener(value: string): void {

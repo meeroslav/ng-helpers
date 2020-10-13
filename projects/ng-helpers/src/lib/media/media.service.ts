@@ -25,7 +25,9 @@ export class MediaService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.listenerCleanup && this.listenerCleanup();
+    if (this.listenerCleanup) {
+      this.listenerCleanup();
+    }
   }
 
   private addListener(mql: MediaQueryList, listener: (event: MediaQueryListEvent) => void): void {
