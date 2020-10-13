@@ -1,4 +1,4 @@
-import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 
 /**
  * Structural directive for manipulating content of the template
@@ -13,7 +13,7 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 @Directive({
   selector: '[media]'
 })
-export class MediaDirective {
+export class MediaDirective implements OnDestroy {
   private listenerCleanup: () => void;
   private hasView = false;
 
@@ -24,6 +24,10 @@ export class MediaDirective {
 
   @Input() set media(value: string) {
     this.initListener(value);
+  }
+
+  ngOnDestroy() {
+    this.listenerCleanup && this.listenerCleanup();
   }
 
   private initListener(value: string): void {
@@ -43,10 +47,7 @@ export class MediaDirective {
       };
       this.listenerCleanup = () => this.removeListener(mediaQueryList, listener);
       // trigger initial
-      listener({
-        media: mediaQueryList.media,
-        matches: mediaQueryList.matches
-      });
+      listener(mediaQueryList);
       this.addListener(mediaQueryList, listener);
     }
   }

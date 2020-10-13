@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/meeroslav/ng-helpers",
   "peerDependencies": {
-    "@angular/core": ">=6.0.0"
+    "@angular/core": ">=6.0.0",
+    "rxjs": ">=6.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
