@@ -1,4 +1,5 @@
 import { Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { BaseMedia, MediaQueryPayload } from './base-media.';
 
 /**
  * Structural directive for manipulating content of the template
@@ -13,33 +14,24 @@ import { Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@ang
 @Directive({
   selector: '[media]'
 })
-export class MediaDirective implements OnDestroy {
-  private listenerCleanup: () => void;
+export class MediaDirective extends BaseMedia {
   private hasView = false;
 
   constructor(
     private readonly viewContainer: ViewContainerRef,
     private readonly template: TemplateRef<any>
-  ) { }
-
-  @Input() set media(value: string) {
-    this.initListener(value);
+  ) {
+    super();
   }
 
-  ngOnDestroy() {
-    if (this.listenerCleanup) {
-      this.listenerCleanup();
-    }
+  @Input() set media(query: string) {
+    this.cleanup();
+    this.initListener(query);
   }
 
-  private initListener(value: string): void {
+  private initListener(query: string): void {
     if (window) {
-      if (this.listenerCleanup) {
-        this.listenerCleanup();
-      }
-
-      const mediaQueryList = window.matchMedia(value);
-      const listener = event => {
+      const listener = (event: MediaQueryPayload) => {
         if (event.matches && !this.hasView) {
           this.renderView();
         }
@@ -47,25 +39,8 @@ export class MediaDirective implements OnDestroy {
           this.clearView();
         }
       };
-      this.listenerCleanup = () => this.removeListener(mediaQueryList, listener);
-      // trigger initial
-      listener(mediaQueryList);
-      this.addListener(mediaQueryList, listener);
+      this.attachListener(query, listener);
     }
-  }
-
-  private addListener(mql: MediaQueryList, listener: (event: MediaQueryListEvent) => void): void {
-    mql.addEventListener
-      ? mql.addEventListener('change', listener)
-      // add deprecated listeners for fallback
-      : mql.addListener(listener);
-  }
-
-  private removeListener(mql: MediaQueryList, listener: (event: MediaQueryListEvent) => void): void {
-    mql.removeEventListener
-      ? mql.removeEventListener('change', listener)
-      // add deprecated remove listeners for fallback
-      : mql.removeListener(listener);
   }
 
   private renderView(): void {
