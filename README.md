@@ -16,10 +16,11 @@ Table of contents:
 - [Installation](#installation)
 - [Package](#package)
   - [Fragment component](#fragment-component)
-    - [Description](#description)
     - [Usage](#usage)
-  - [Media](#media)
+  - [Let directive](#let-directive)
     - [Usage](#usage-1)
+  - [Media](#media)
+    - [Usage](#usage-2)
     - [Media service](#media-service)
     - [Media component](#media-component)
     - [Media directive](#media-directive)
@@ -41,8 +42,6 @@ This package consists of the following helpers:
 The `Fragment component` provides the solution for cases when you don't want your component template to be wrapped in a named tag. Such cases include:
 - having multiple root nodes
 - having a native element as a root node
-
-#### Description
 
 An angular component gets wrapped in a single named tag, provided by the `selector` property. Each component must therefore have a single root DOM note wrapping an entire body. There are, however, situations when we would like to have multiple `root` nodes, for example, if our component is to render `li` elements in the `ul`:
 
@@ -130,6 +129,69 @@ will render as:
 
 Possible usages are rendering partial `li` lists, table rows or columns or any other parts of DOM that require the specific parent DOM element.
 
+### Let directive
+
+The angular template is often using deep nested object values or observables in multiple places. The common pattern is to use the `ngIf` structural directive to extract the value:
+
+```HTML
+<div *ngIf="loadingState$ | async as loadingState">
+  <my-table 
+    [loading]="loadingState" 
+    [rows]="rows"
+    [columns]="columns">
+  </my-table>
+  <button 
+    (click)="addRow()"
+    [disabled]="loadingState === LoadingState.Loading"
+  >Add row</button>
+</div>
+```
+
+The non-so-obvious flaw of the above approach is that whenever the `loadingState` has a falsy value (0, null, false, etc.) the entire block will not be rendered. The `ngLet` solves this by always rendering the inner content and passing the value no matter if falsy or truthy.
+
+#### Usage
+
+Before using the directive we need to include the module.
+```typescript
+import { LetModule } from 'ng-helpers';
+
+@NgModule({
+  imports: [
+    LetModule
+  ]
+})
+export class AppModule { }
+```
+
+Now we can use it in our component templates
+```html
+<div *ngLet="loadingState$ | async as loadingState">
+  The {{ loadingState }} will be available here
+</div>
+```
+
+We can also use it to put deep nested values in variables for better readability:
+```html
+<form [formGroup]="myForm">
+  <input formControlName="name" required />
+  <ng-container *ngLet="myForm.controls.name as name">
+    <div *ngIf="name.invalid && (name.dirty || name.touched)"
+        class="alert alert-danger">
+
+      <div *ngIf="name.errors.required">
+        Name is required.
+      </div>
+      <div *ngIf="name.errors.minlength">
+        Name must be at least 4 characters long.
+      </div>
+      <div *ngIf="name.errors.forbiddenName">
+        Name cannot be Bob.
+      </div>
+    </div>
+  </ng-container>
+</form>
+```
+
 ### Media
 
 The `Media package` consists several utilities used to responsive content handling in Angular. Those utilities include:
@@ -149,11 +211,9 @@ In order to use any of the utility parts of the media package we need to include
 import { MediaModule } from 'ng-helpers';
 
 @NgModule({
-  //...
   imports: [
     MediaModule
-  ],
-  //...
+  ]
 })
 export class AppModule { }
 ```
