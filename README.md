@@ -173,10 +173,14 @@ Usage:
   `
 })
 class FooBarComponent { 
-  private mediaService = new MediaService('(orientation: portrait)');
   private sub: Subscription<boolean>;
 
+  constructor(private readonly mediaService: MediaService) {};
+
   ngOnInit() {
+    // initialize listener
+    this.mediaService.setQuery('(orientation: portrait)');
+    // subscribe to changes programatically or via template
     this.mediaService.match$
       .pipe(
         distinctUntilChanged(),
@@ -187,6 +191,7 @@ class FooBarComponent {
 }
 ```
 
+> In order to avoid memory leaks don't forget to unsubscribe all the listeners! The observable will be automatically closed when service is destroyed.
 
 #### Media component
 

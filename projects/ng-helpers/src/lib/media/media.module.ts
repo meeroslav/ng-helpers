@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MediaComponent } from './media.component';
 import { MediaDirective } from './media.directive';
@@ -13,6 +14,9 @@ import { MediaService } from './media.service';
   ],
   exports: [
     MediaDirective
+  ],
+  imports: [
+    CommonModule
   ]
 })
 export class MediaModule { }
