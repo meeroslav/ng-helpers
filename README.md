@@ -16,11 +16,14 @@ Table of contents:
 - [Installation](#installation)
 - [Package](#package)
   - [Fragment component](#fragment-component)
-    - [Problem](#problem)
+    - [Description](#description)
     - [Usage](#usage)
-  - [Media](#media-directive)
-    - [Problem](#problem-1)
+  - [Media](#media)
     - [Usage](#usage-1)
+    - [Media service](#media-service)
+    - [Media component](#media-component)
+    - [Media directive](#media-directive)
+    - [Common media queries](#common-media-queries)
 - [License](#license)
 
 ## Installation
@@ -29,18 +32,19 @@ npm install --save ng-helpers
 ```
 
 ## Package
-Package consists of following helpers:
+This package consists of the following helpers:
 - [Fragment component](#fragment-component)
-- [Media](#media-directive)
+- [Media](#media)
 
 ### Fragment component
 
-Fragment component provides solution for cases when you don't want your component template to be wrapped in named tags, but rather have multiple root nodes.
+The `Fragment component` provides the solution for cases when you don't want your component template to be wrapped in a named tag. Such cases include:
+- having multiple root nodes
+- having a native element as a root node
 
-#### Problem
+#### Description
 
-Angular component gets wrapped in single named tag, provided by the `selector` property. Each component must therefore have single root DOM note wrapping entire body.
-There are, however, situations when we would like to have multiple `root` nodes, for example, if our component is to render `li` elements in the `ul`:
+An angular component gets wrapped in a single named tag, provided by the `selector` property. Each component must therefore have a single root DOM note wrapping an entire body. There are, however, situations when we would like to have multiple `root` nodes, for example, if our component is to render `li` elements in the `ul`:
 
 With parent template defined as:
 ```html
@@ -73,7 +77,7 @@ renders as
 </ul>
 ```
 
-which is, of course, invalid HTML. What we would like is for it to render as:
+which is, of course, invalid HTML and might additionally break our styles. What we would like is for it to render as:
 ```html
 <ul>
   <li>Apple</li>
@@ -84,7 +88,7 @@ which is, of course, invalid HTML. What we would like is for it to render as:
 
 #### Usage
 
-Fragment component replaces the root element with contents of template defined as first child element.
+The `Fragment component` replaces the root element with the contents of the template defined as the first child element.
 
 ```typescript
 @Component({
@@ -124,23 +128,99 @@ will render as:
 </ul>
 ```
 
-Possible usages are rendering partial `li` lists, table rows or columns or any other parts of DOM that require specific parent DOM element.
+Possible usages are rendering partial `li` lists, table rows or columns or any other parts of DOM that require the specific parent DOM element.
 
-### Media directive
+### Media
 
-Structural directive for manipulating content of the template based on matched media query. It's an upgrade from [CSS based responsive design driven by media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries).
+The `Media package` consists several utilities used to responsive content handling in Angular. Those utilities include:
+- [Media service](#media-service)
+- [Media component](#media-component)
+- [Media directive](#media-directive)
 
-#### Problem
-The CSS media queries represent well-known way to handle responsive design, but the CSS cannot control the generation of DOM elements, just their visual representation. By having too many differences between responsive states we are poluting the DOM by keeping there elements that are not visible.
+You can read more about the motivation in my blog post [Responsive Angular Components](https://missing-manual.com/responsive-angular/). It's an upgrade from [CSS based responsive design by media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) as it allows us to manipulate the actual content of the DOM instead of just it's visibility. By having too many differences between responsive states we are polluting the DOM by keeping there elements that are not visible.
 
-This can be avoided in Angular by using structural directives or components that will not be rendered unless certain media query is matched.
+This can be avoided in Angular by using services, directives or components that will not be rendered unless the certain media query is matched. For example we could use the service to fetch data from different endpoints depending on media or use a component to optionally render a certain DOM block. 
 
 #### Usage
+
+In order to use any of the utility parts of the media package we need to include the `MediaModule`:
+
+```typescript
+import { MediaModule } from 'ng-helpers';
+
+@NgModule({
+  //...
+  imports: [
+    MediaModule
+  ],
+  //...
+})
+export class AppModule { }
+```
+
+#### Media service
+
+The `Media service` is a service that exposes an Observable returning matched state of the given media queries.
+
+Usage:
+```typescript
+@Component({
+  selector: 'foo-bar',
+  template: `
+    <div *ngIf="mediaService.match$ | async">
+      I am shown only in the portrait mode
+    </div>
+  `
+})
+class FooBarComponent { 
+  private mediaService = new MediaService('(orientation: portrait)');
+  private sub: Subscription<boolean>;
+
+  ngOnInit() {
+    this.mediaService.match$
+      .pipe(
+        distinctUntilChanged(),
+        map(isPortrait => isPortrait ? 'Potrait' : 'Landscape')
+      )
+      .subscribe(orientation => console.log(`Orientation changed! New: ${orientation}`));
+  }
+}
+```
+
+
+#### Media component
+
+The `Media component` is an angular wrapper component for manipulating the rendering of the content based on the matched media queries. 
+
+Usage:
+
+```typescript
+@Component({
+  selector: 'foo-bar',
+  template: `
+    <use-media query="(min-width: 768px)">
+      I am visible only on desktop
+    </use-media>
+    <use-media query="(orientation: portrait)">
+      I am visible only on portrait mode
+    </use-media>
+  `
+})
+class FooBarComponent { }
+```
+
+#### Media directive
+
+The `Media directive` is a structural directive for manipulating the content of the template based on the matched media queries. 
+
+Usage:
 
 ```html
 <div *media="'(min-width: 768px)'">I will be shown only on desktop</div>
 <my-portait-component *media="'(orientation: portrait)'"></my-portait-component>
 ```
+
+#### Common media queries
 
 Some of the most common media queries:
 
