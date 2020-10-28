@@ -13,7 +13,8 @@ import { MediaService } from './media.service';
     MediaService
   ],
   exports: [
-    MediaDirective
+    MediaDirective,
+    MediaComponent
   ],
   imports: [
     CommonModule
