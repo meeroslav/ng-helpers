@@ -1,4 +1,4 @@
-import { TemplateRef, ViewChild, ViewContainerRef, Directive } from '@angular/core';
+import { TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 
 // A component that replaces the host DOM element
 // with contents of a ng-template in the target component

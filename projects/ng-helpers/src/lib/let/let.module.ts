@@ -5,5 +5,8 @@ import { NgLetDirective } from './let.directive';
   declarations: [
     NgLetDirective,
   ],
+  exports: [
+    NgLetDirective
+  ],
 })
 export class LetModule { }
