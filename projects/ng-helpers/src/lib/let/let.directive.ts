@@ -1,8 +1,8 @@
 import { Directive, Input, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
 
-class NgLetContext {
-  $implicit: any = null;
-  ngLet: any = null;
+class NgLetContext<T> {
+  $implicit: T = null;
+  ngLet: T = null;
 }
 
 /**
@@ -25,15 +25,15 @@ class NgLetContext {
   // tslint:disable-next-line:directive-selector
   selector: '[ngLet]'
 })
-export class NgLetDirective implements OnInit {
-  private readonly context = new NgLetContext();
+export class NgLetDirective<T = any> implements OnInit {
+  private readonly context = new NgLetContext<T>();
 
   @Input()
-  set ngLet(value: any) {
+  set ngLet(value: T) {
     this.context.$implicit = this.context.ngLet = value;
   }
 
-  constructor(private readonly vcr: ViewContainerRef, private readonly templateRef: TemplateRef<NgLetContext>) { }
+  constructor(private readonly vcr: ViewContainerRef, private readonly templateRef: TemplateRef<NgLetContext<T>>) { }
 
   ngOnInit() {
     this.vcr.createEmbeddedView(this.templateRef, this.context);
